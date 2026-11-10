@@ -1,0 +1,1 @@
+pg_dump -U booking_admin -d booking --schema-only -f schema.sql

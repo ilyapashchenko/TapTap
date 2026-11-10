@@ -1,0 +1,639 @@
+/* Основной фоновый цвет: #E5EDF8
+цвет кнопки: #fdf9f1
+цвет кнопки при наведении: #f0e9d8
+Цвет текста кнопки: black
+обводка вокруг кнопки:
+border: 1px solid black;
+  border-radius: 8px; */
+
+
+html,
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #E5EDF8;
+}
+
+.container {
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.username {
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.title {
+  font-size: 16px;
+  /* margin-bottom: 8px; */
+  margin-top: 30px;
+
+}
+
+.service-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* прямоугольника с названием сервиса и кнопкой */
+
+.service-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  padding: 10px;
+  /* border-radius: 8px; */
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
+  /* border-bottom: 1px solid black; */
+}
+
+.add-button {
+  margin: 16px auto 0;
+  padding: 10px;
+  background-color: #fdf9f1;
+  color: black;
+  border: 1px solid black;
+  border-radius: 8px;
+  width: 200px;
+  font-size: 16px;
+  display: block;
+}
+
+.add-button:hover {
+  background-color: #f0e9d8;
+  /* Можешь выбрать любой другой цвет */
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 1000;
+  /* важно! */
+}
+
+.modal {
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #E5EDF8;
+  padding: 16px;
+  align-items: center;
+  /* по горизонтали */
+  border-radius: 8px;
+  display: none;
+  width: 80%;
+  z-index: 2000;
+  /* должно быть выше, чем у overlay */
+}
+
+.modal-title {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.modal-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border: 1px solid black;
+  border-radius: 6px;
+  background-color: #fdf9f1;
+  color: black;
+  font-size: 16px;
+}
+
+.modal-button:hover {
+  background-color: #f0e9d8;
+  /* Можешь выбрать любой другой цвет */
+  cursor: pointer;
+}
+
+.close-btn {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  background: none;
+  border: none;
+  font-size: 25px;
+  color: black;
+  cursor: pointer;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+
+.book-button {
+  margin-top: 0;
+  padding: 8px 12px;
+  background-color: #fdf9f1;
+  border: 1px solid black;
+  /* Чёрная обводка */
+  border-radius: 6px;
+  cursor: pointer;
+  color: black;
+  /* transition: background-color 0.3s ease; */
+}
+
+.book-button:hover {
+  background-color: #f0e9d8;
+  /* Немного светлее при наведении */
+}
+
+#confirmModal {
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #E5EDF8;
+  padding: 16px;
+  align-items: center;
+  /* по горизонтали */
+  border-radius: 8px;
+  display: none;
+  width: 80%;
+  z-index: 2000;
+  /* должно быть выше, чем у overlay */
+}
+
+#cancelDeleteBtn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 25px;
+  color: black;
+  cursor: pointer;
+}
+
+
+/* оформление гамбургера */
+.header-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80;
+  /* сейчас сделал так
+  height: 80px; */
+  background-color: #E5EDF8;
+  display: flex;
+  flex-direction: column;
+  /* ← это важно */
+  align-items: flex-start;
+  padding: 10px;
+  z-index: 1500;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+
+  /* Добавляем выравнивание содержимого вправо */
+  justify-content: flex-end;
+}
+
+.menu {
+  position: relative;
+  /* это добавил 22:02 */
+  top: 16px;
+}
+
+.menu-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2000;
+  background: none;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+}
+
+
+
+.dropdown-menu {
+  position: absolute;
+  top: 10px;
+  /* или что там у тебя */
+  right: 10px;
+  /* оставь как есть */
+  width: 152px;
+  /* увеличил ширину фона */
+  background-color: #E5EDF8;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(53, 14, 14, 0.2);
+  display: none;
+  flex-direction: column;
+  padding: 10px;
+  z-index: 2000;
+}
+
+.dropdown-menu button {
+  margin: 6px 0;
+  padding: 10px 20px 10px 10px;
+  /* добавил справа отступ 20px, чтобы кнопки не растягивались на всю ширину */
+  border: none;
+  background-color: #fdf9f1;
+  border: 1px solid black;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  max-width: 200px;
+  /* фиксируем ширину кнопок */
+  color: black;
+}
+
+
+
+/* При наведении — подсветка */
+.dropdown-menu button:hover {
+  background-color: #f0e9d8;
+}
+
+
+.content {
+  margin-top: 60px;
+  /* отступ равен высоте header-bar */
+  padding: 16px;
+}
+
+/* чёрная линия, разделяющая разные места */
+
+.service-divider {
+  height: 1px;
+  background-color: black;
+  margin: 4px auto;
+  width: 85%;
+}
+
+.custom-alert {
+  position: fixed;
+  bottom: 450px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffdddd;
+  color: #900;
+  padding: 12px 20px;
+  border: 1px solid #d88;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 3000;
+  display: none;
+  max-width: 80%;
+  text-align: center;
+}
+
+#serviceIdInput {
+  display: block;
+  margin: 0 auto 12px;
+  /* по центру + отступ снизу */
+  width: 80%;
+  max-width: 200px;
+  padding: 8px;
+  border: 1px solid black;
+  border-radius: 8px;
+  /* border: 1px solid #ccc;
+  border-radius: 6px; */
+  font-size: 13px;
+}
+
+.delete-button {
+  background: none;
+  /* убираем фон */
+  border: none;
+  /* убираем рамку */
+  padding: 0;
+  /* убираем внутренние отступы */
+  cursor: pointer;
+  /* чтобы был курсор руки при наведении */
+  font-size: 18px;
+  /* размер иконки, подкорректируй под себя */
+  color: inherit;
+  /* цвет иконки унаследовать */
+}
+
+/* модалка кнопки выбора мастера */
+#masterList button {
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #fdf9f1;
+  border: 1px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+  color: black;
+}
+
+/* Контейнер для списка услуг */
+.service-select-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  background: #f9f9f9;
+}
+
+/* Стиль для каждой услуги */
+.service-option {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.service-option:last-child {
+  border-bottom: none;
+}
+
+.service-option input[type="checkbox"] {
+  margin-right: 12px;
+  transform: scale(1.2);
+}
+
+/* МОДАЛКА ВЫБОРА ДАТЫ */
+.date-input {
+  padding: 8px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+
+/* НИЖНЯЯ НАВИГАЦИЯ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: space-around;
+  padding: 4px 0;
+  z-index: 1000;
+  height: 80px;
+  align-items: flex-start;
+}
+
+.bottom-nav button {
+  background: none;
+  border: none;
+  /* font-size: 14px; */
+  font-size: 20px;
+  text-align: center;
+  flex-grow: 1;
+  padding: 4px 0;
+}
+
+.bottom-nav button span {
+  display: block;
+  font-size: 12px;
+  margin-top: 2px;
+  color: black;
+}
+
+.bottom-nav button.active {
+  color: black;
+  font-weight: bold;
+}
+
+
+
+/* ЧТОБЫ КОНТЕНТ НА ЭКРАНЕ НЕ ПЕРЕСЕКАЛСЯ С НИЖНИМ МЕНЮ */
+
+.screen {
+  /* padding-top: 80px; */
+  display: none;
+  padding-bottom: 80px;
+  /* чтобы не пересекалось с нижним меню */
+}
+
+
+/* ОКНО С ЗАПИСЯМИ */
+.booking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.booking-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+#bookingsScreen {
+  padding-top: 5px;
+  /* z-index: 1300; */
+}
+
+/* ОКНО ДЛЯ БИЗНЕСА */
+
+.date-picker {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  padding: 10px 0;
+  z-index: 10;
+}
+
+/* #businessContent {
+  padding-top: 50px;
+  padding-bottom: 90px;
+} */
+
+/* ЭКРАН БИЗНЕС */
+
+
+/* отрегулированный для корректного отображения таблицы с записями для мастера */
+body.role-master #businessContent {
+  display: flex;
+  justify-content: center;
+  transform: scale(0.9);
+  transform-origin: top center;
+  padding: 16px;
+}
+
+
+body.role-master #businessContent table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+
+
+
+
+
+
+/* корректно отрегулированный для дефолт пользователя */
+body.role-user #businessScreen {
+  padding-top: 5px;
+}
+
+body.role-user .businessContent {
+  padding: 16px;
+}
+
+body.role-user .business-date-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  margin-top: 30px;
+  font-size: 14px;
+}
+
+/* КНОПКИ ВЫБОРА ВРЕМЕНИ */
+.time-slot-button {
+  padding: 12px 16px;
+  margin: 6px;
+  font-size: 16px;
+  background-color: #fdf9f1;
+  border: 1px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: black;
+}
+
+.time-slot-button:hover {
+  background-color: #f0e9d8;
+}
+
+/* Активная кнопка времени */
+.time-slot-button.selected {
+  background-color: #f0e9d9;
+  font-weight: bold;
+  color: black;
+}
+
+/* МОДАЛКА С ВЫБОРОМ ВРЕМЕНИ */
+#chooseTimeModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #E5EDF8;
+  padding: 20px;
+  width: 90%;
+  max-width: 320px;
+  max-height: 80vh;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  z-index: 1500;
+}
+
+#slotList {
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* КНОПКА ПОДТВЕРЖДЕНИЯ ВРЕМЕНИ ПРИ ЗАПИСИ  */
+#confirmBookingBtn {
+  margin-top: 16px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 1px solid black;
+  border-radius: 8px;
+  background-color: #f0e9d8;
+  color: black;
+  cursor: pointer;
+}
+
+#confirmBookingBtn:disabled {
+  background-color: #fdf9f1;
+  cursor: not-allowed;
+}
+
+
+#contactButton {
+  max-width: 60%;
+  left: 50%;
+}
+
+
+.terms-container {
+  max-width: 800px;
+  margin: 60px auto;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+#terms-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#terms-text {
+  text-align: justify;
+  line-height: 1.6;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+
+/* КНОПКА ПОДТВЕЖДЕНИЯ У МАСТЕРА */
+.no-show-btn {
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.no-show-btn:hover {
+  background-color: #e33b3b;
+}

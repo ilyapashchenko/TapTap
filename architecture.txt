@@ -1,0 +1,22 @@
+booking-server/
+|----controllers/
+|    |----authController.js
+|    |----bookingController.js
+|    |----masterController.js
+|    |----userController.js
+|----db/
+|    |----pool.js
+|----node_modules/
+|----public/
+|    |----index.html
+|    |----terms.html
+|----|----styles.css
+|----|----app.js
+|----routes/
+|    |----authRoutes.js
+|    |----bookingRoutes.js
+|----.env
+|----architecture.txt
+|----package-lock.json
+|----package.json
+|----server.js

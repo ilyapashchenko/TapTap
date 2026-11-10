@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini App</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- <div class="header-bar">
+    <div class="overlay" id="overlay" onclick="closeAllModals()"></div>
+    <button class="menu-btn" id="menuButton" onclick="toggleMenu()">☰</button>
+    <div class="dropdown-menu" id="dropdownMenu">
+      <button class="close-btn" onclick="toggleMenu()">×</button>
+      <button onclick="showSupport()">Поддержка</button>
+    </div>
+    <div class="title" id="mainTitle">Ваши сервисы:</div>
+  </div> -->
+  <div class="header-bar">
+    <div class="overlay" id="overlay" onclick="closeAllModals()"></div>
+
+    <button class="menu-btn" id="menuButton" onclick="toggleMenu()">☰</button>
+
+    <div class="dropdown-menu" id="dropdownMenu">
+      <button class="close-btn" onclick="toggleMenu()">×</button>
+      <button onclick="showSupport()">Поддержка</button>
+    </div>
+
+    <div class="title" id="mainTitle">Ваши сервисы:</div>
+
+    <!-- 👇 Блок выбора даты для сотрудников на экране "Бизнес" -->
+    <div id="businessDateControls" style="display: none;" class="business-date-controls">
+      <label for="businessDate">Выберите дату:</label>
+      <input type="date" id="businessDate" value="" />
+    </div>
+  </div>
+
+
+  <!-- Контейнер всех экранов -->
+  <div class="content">
+
+    <!-- Главный экран -->
+    <div class="screen" id="mainScreen">
+      <div class="service-list" id="serviceList">
+        <!-- Сервисы будут подгружаться сюда -->
+      </div>
+      <button class="add-button" onclick="openModal()">Добавить</button>
+    </div>
+
+    <!-- Экран записей -->
+    <div class="screen" id="bookingsScreen" style="display: none;">
+      <!-- <div class="modal-title">Ваши записи</div> -->
+      <div id="bookingList">Загрузка записей...</div>
+    </div>
+
+    <!-- Экран бизнес -->
+    <div class="screen" id="businessScreen" style="display: none;">
+      <!-- <div class="modal-title" id="businessTitle">Бизнес</div> -->
+      <div id="businessContent">
+
+        <!-- Здесь таблица записей -->
+      </div>
+
+
+
+
+
+      <!-- <div id="businessContent">
+    </div> -->
+    </div>
+
+
+    <!-- Модалки и оверлеи -->
+
+    <div class="modal" id="addModal">
+      <button class="close-btn" onclick="closeModal()">×</button>
+      <div class="modal-title">Выберите способ добавления</div>
+      <button class="modal-button" onclick="addByID()">Добавить по ID</button>
+      <button class="modal-button" onclick="addByQR()">Добавить через QR</button>
+    </div>
+
+    <div class="modal" id="idInputModal">
+      <button class="close-btn" onclick="closeModal()">×</button>
+      <div class="modal-title">Введите ID</div>
+      <input id="serviceIdInput" type="text" placeholder="Например: 12345" autocomplete="off" />
+      <button class="add-button" onclick="submitId()">Добавить</button>
+    </div>
+
+    <div class="modal" id="confirmModal">
+      <button class="close-btn" onclick="closeConfirmModal()">×</button>
+      <div class="modal-title">Удалить этот сервис?</div>
+      <button class="modal-button" onclick="deleteConfirmedService()">Удалить</button>
+    </div>
+    <!-- модалка удаления записи -->
+
+    <!-- Оверлей для удаления записи -->
+    <div id="bookingOverlay" class="overlay" style="display:none;"></div>
+
+    <!-- Модалка для удаления записи -->
+    <div id="bookingConfirmModal" class="modal" style="display:none;">
+      <p>Удалить эту запись?</p>
+      <div class="modal-buttons">
+        <button onclick="deleteConfirmedBooking()">Да</button>
+        <button onclick="closeBookingConfirmModal()">Отмена</button>
+      </div>
+    </div>
+
+    <!-- Модалка выбора мастера -->
+    <div class="modal" id="chooseMasterModal">
+      <button class="close-btn" onclick="closeChooseMasterModal()">×</button>
+      <div class="modal-title">Выберите мастера</div>
+      <div id="masterList"></div>
+    </div>
+
+    <!-- Модалка выбора услуг -->
+    <div class="modal" id="chooseServiceModal">
+      <button class="close-btn" onclick="closeChooseServiceModal()">×</button>
+      <div class="modal-title">Выберите услуги</div>
+      <div id="serviceSelectList" class="service-select-list"></div>
+      <button class="modal-button" onclick="submitSelectedServices()">Продолжить</button>
+    </div>
+
+    <!-- Модалка выбора даты -->
+    <div class="modal" id="chooseDateModal">
+      <button class="close-btn" onclick="closeChooseDateModal()">×</button>
+      <div class="modal-title">Выберите дату</div>
+      <input type="date" id="bookingDatePicker" min="" class="date-input">
+      <button class="modal-button" onclick="submitSelectedDate()">Продолжить</button>
+    </div>
+
+    <!-- Модалка выбора времени -->
+    <div class="modal" id="chooseTimeModal">
+      <button class="close-btn" onclick="closeChooseTimeModal()">×</button>
+      <div class="modal-title">Выберите время</div>
+      <div id="slotList" class="slot-list"></div>
+      <button class="modal-button" id="confirmBookingBtn" onclick="submitBooking()" disabled>Записаться</button>
+    </div>
+
+    <!-- модалка подтверждения "не пришёл" -->
+    <!-- <div class="modal" id="noShowModal">
+      <button class="close-btn" onclick="closeNoShowModal()">×</button>
+      <div class="modal-title" id="noShowModalTitle">Отметить клиента как "не пришёл"?</div>
+      <button id="confirmNoShowBtn" class="modal-button">Подтвердить</button>
+      <button id="cancelNoShowBtn" class="modal-button">Отмена</button>
+    </div> -->
+    <div class="modal" id="noShowModal" style="display:none;">
+      <h3>Отметить как "не пришёл"</h3>
+      <p>Вы уверены, что клиент <b id="noShowClientName"></b> не пришёл?</p>
+      <div class="modal-buttons">
+        <button id="confirmNoShowBtn" class="modal-button">Подтвердить</button>
+        <button id="cancelNoShowBtn" class="modal-button modal-cancel">Отмена</button>
+      </div>
+    </div>
+
+
+
+
+    <!-- Нижнее меню -->
+    <div class="bottom-nav">
+      <!-- <button class="active"><i class="fas fa-home"></i><span>Главная</span></button>
+    <button><i class="fas fa-calendar-alt"></i><span>Записи</span></button>
+    <button><i class="fas fa-briefcase"></i><span>Бизнес</span></button> -->
+
+      <button onclick="switchTab('home')">🏠<br><span>Главная</span></button>
+      <button onclick="switchTab('bookings')">📅<br><span>Записи</span></button>
+      <button onclick="switchTab('business')">🏢<br><span>Бизнес</span></button>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeAllModals()"></div>
+    <script src="app.js"></script>
+    <div id="customAlert" class="custom-alert"></div>
+</body>
+
+</html>
